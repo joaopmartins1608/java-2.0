@@ -1,0 +1,235 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+enum TipoPessoa {
+    CLIENTE, FORNECEDOR, AMBOS
+}
+
+enum TipoEndereco {
+    COMERCIAL, RESIDENCIAL, ENTREGA, CORRESPONDENCIA
+}
+
+class Endereco {
+    private final String cep;
+    private final String logradouro;
+    private final String numero;
+    private final String complemento;
+    private final TipoEndereco tipoEndereco;
+
+    public Endereco(String cep, String logradouro, String numero, String complemento, TipoEndereco tipoEndereco) {
+        this.cep = cep;
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.tipoEndereco = tipoEndereco;
+    }
+
+    @Override
+    public String toString() {
+        return "Endereço{" +
+                "CEP='" + cep + '\'' +
+                ", Logradouro='" + logradouro + '\'' +
+                ", Número='" + numero + '\'' +
+                ", Complemento='" + complemento + '\'' +
+                ", Tipo de Endereço=" + tipoEndereco +
+                '}';
+    }
+}
+
+class Pessoa {
+    private final String nome;
+    private final TipoPessoa tipoPessoa;
+    private final List<Endereco> enderecos;
+
+    public Pessoa(String nome, TipoPessoa tipoPessoa) {
+        this.nome = nome;
+        this.tipoPessoa = tipoPessoa;
+        this.enderecos = new ArrayList<>();
+    }
+
+    public void adicionarEndereco(Endereco endereco) {
+        if (enderecos.size() < 5) {
+            enderecos.add(endereco);
+        } else {
+            System.out.println("Limite de 5 endereços atingido!");
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Nome: ").append(nome).append("\n");
+        sb.append("Tipo de Pessoa: ").append(tipoPessoa).append("\n");
+        sb.append("Endereços:\n");
+        for (Endereco endereco : enderecos) {
+            sb.append("  ").append(endereco).append("\n");
+        }
+        return sb.toString();
+    }
+}
+
+class PessoaFisica extends Pessoa {
+    private final String cpf;
+
+    public PessoaFisica(String nome, TipoPessoa tipoPessoa, String cpf) {
+        super(nome, tipoPessoa);
+        this.cpf = cpf;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CPF: " + cpf + "\n";
+    }
+}
+
+class PessoaJuridica extends Pessoa {
+    private final String cnpj;
+
+    public PessoaJuridica(String nome, TipoPessoa tipoPessoa, String cnpj) {
+        super(nome, tipoPessoa);
+        this.cnpj = cnpj;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CNPJ: " + cnpj + "\n";
+    }
+}
+
+class Cliente {
+    private final String nome;
+
+    public Cliente(String nome) {
+        this.nome = nome;
+    }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
+}
+
+class Produto {
+    private final String nome;
+    private final double preco;
+
+    public Produto(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+
+    @Override
+    public String toString() {
+        return nome + " (R$ " + preco + ")";
+    }
+}
+
+class Pedido {
+    private final Cliente cliente;
+    private final String observacoes;
+    private final List<Produto> produtos;
+
+    public Pedido(Cliente cliente, String observacoes) {
+        this.cliente = cliente;
+        this.observacoes = observacoes;
+        this.produtos = new ArrayList<>();
+    }
+
+    public void adicionarProduto(Produto produto) {
+        produtos.add(produto);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Cliente: ").append(cliente).append("\n");
+        sb.append("Observações: ").append(observacoes).append("\n");
+        sb.append("Produtos:\n");
+        for (Produto produto : produtos) {
+            sb.append("  ").append(produto).append("\n");
+        }
+        return sb.toString();
+    }
+}
+
+public class CadastroPizzaria {
+    public static void main(String[] args) {
+        try (Scanner sc = new Scanner(System.in)) {
+
+            System.out.print("Digite o nome da pessoa: ");
+            String nome = sc.nextLine();
+
+            System.out.println("Escolha o tipo de pessoa:");
+            System.out.println("1 - Pessoa Física");
+            System.out.println("2 - Pessoa Jurídica");
+            int tipoPessoaOpcao = sc.nextInt();
+            sc.nextLine(); // Limpar buffer
+
+            Pessoa pessoa;
+            pessoa = switch (tipoPessoaOpcao) {
+                case 1 -> {
+                    System.out.print("Digite o CPF: ");
+                    String cpf = sc.nextLine();
+                    yield new PessoaFisica(nome, TipoPessoa.CLIENTE, cpf);
+                }
+                case 2 -> {
+                    System.out.print("Digite o CNPJ: ");
+                    String cnpj = sc.nextLine();
+                    yield new PessoaJuridica(nome, TipoPessoa.FORNECEDOR, cnpj);
+                }
+                default -> {
+                    System.out.println("Opção inválida! Criando como Pessoa Física.");
+                    yield new PessoaFisica(nome, TipoPessoa.CLIENTE, "000.000.000-00");
+                }
+            };
+
+            for (int i = 0; i < 5; i++) {
+                System.out.print("Deseja adicionar um endereço? (s/n): ");
+                String opcao = sc.nextLine();
+                if (!opcao.equalsIgnoreCase("s")) {
+                    break;
+                }
+
+                System.out.print("CEP: ");
+                String cep = sc.nextLine();
+
+                System.out.print("Logradouro (Rua, bairro, cidade): ");
+                String logradouro = sc.nextLine();
+
+                System.out.print("Número: ");
+                String numero = sc.nextLine();
+
+                System.out.print("Complemento (pressione Enter se não houver): ");
+                String complemento = sc.nextLine();
+
+                System.out.println("Tipo de Endereço:");
+                System.out.println("1 - Comercial");
+                System.out.println("2 - Residencial");
+                System.out.println("3 - Entrega");
+                System.out.println("4 - Correspondência");
+
+                int tipoEnderecoOpcao = sc.nextInt();
+                sc.nextLine(); // Limpar buffer
+
+                TipoEndereco tipoEndereco;
+                tipoEndereco = switch (tipoEnderecoOpcao) {
+                    case 1 -> TipoEndereco.COMERCIAL;
+                    case 2 -> TipoEndereco.RESIDENCIAL;
+                    case 3 -> TipoEndereco.ENTREGA;
+                    case 4 -> TipoEndereco.CORRESPONDENCIA;
+                    default -> {
+                        System.out.println("Opção inválida! Definido como RESIDENCIAL.");
+                        yield TipoEndereco.RESIDENCIAL;
+                    }
+                };
+
+                Endereco endereco = new Endereco(cep, logradouro, numero, complemento, tipoEndereco);
+                pessoa.adicionarEndereco(endereco);
+            }
+
+            System.out.println("\nCadastro realizado com sucesso!");
+            System.out.println(pessoa);
+        }
+    }
+}
