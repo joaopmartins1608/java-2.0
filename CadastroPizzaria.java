@@ -25,10 +25,6 @@ public class CadastroPizzaria {
                 default -> System.out.println("Opção inválida. Por favor, tente novamente.");
             }
 
-            // Ir para o código de cadastro de pessoas diretamente
-            System.out.println("\nIndo para o cadastro de pessoas...");
-            CadastroPessoas.realizarCadastro(scanner);
-
         }
     }
 }
