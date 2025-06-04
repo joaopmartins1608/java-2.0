@@ -1,17 +1,17 @@
 import java.util.Scanner;
 
 public class CadastroDePessoas {
-    public static void main(String[] args) {
+    public static void cpes() {
         try (Scanner sc = new Scanner(System.in)) {
 
             String nome, telefone, tipoPessoa, tipoCadastro, documento = "", senha = "", endereco = "";
             boolean valido;
 
-            // Nome
+            
             System.out.print("Digite o nome: ");
             nome = sc.nextLine();
 
-        // Telefone
+       
         do {
             System.out.print("Digite o telefone (DDD + número, 12 dígitos): ");
             telefone = sc.nextLine().replaceAll("\\D", "");
@@ -19,7 +19,7 @@ public class CadastroDePessoas {
             if (!valido) System.out.println("Telefone inválido. Tente novamente.");
         } while (!valido);
 
-        // Tipo de pessoa
+        
         do {
             System.out.print("Pessoa Física (1) ou Jurídica (2): ");
             tipoPessoa = sc.nextLine();
@@ -27,7 +27,7 @@ public class CadastroDePessoas {
             if (!valido) System.out.println("Opção inválida. Tente novamente.");
         } while (!valido);
 
-        // Tipo de cadastro
+        
         do {
             System.out.print("Cliente (1), Fornecedor (2) ou Ambos (3): ");
             tipoCadastro = sc.nextLine();
@@ -35,9 +35,9 @@ public class CadastroDePessoas {
             if (!valido) System.out.println("Opção inválida. Tente novamente.");
         } while (!valido);
 
-        // Documentos e senha
+        
         switch (tipoCadastro) {
-            case "2" -> { // Fornecedor
+            case "2" -> { 
                 do {
                     System.out.print("Digite o CNPJ (14 dígitos): ");
                     documento = sc.nextLine().replaceAll("\\D", "");
@@ -52,7 +52,7 @@ public class CadastroDePessoas {
                     if (!valido) System.out.println("Senha inválida. Tente novamente.");
                 } while (!valido);
             }
-            case "3" -> { // Ambos
+            case "3" -> { 
                 String opcaoDoc;
                 do {
                     System.out.print("Deseja cadastrar CPF (1) ou CNPJ (2)? ");
@@ -84,7 +84,7 @@ public class CadastroDePessoas {
                     if (!valido) System.out.println("Senha inválida. Tente novamente.");
                 } while (!valido);
             }
-            default -> { // Cliente
+            default -> { 
                 do {
                     System.out.print("Digite o CPF (11 dígitos): ");
                     documento = sc.nextLine().replaceAll("\\D", "");
@@ -92,14 +92,14 @@ public class CadastroDePessoas {
                     if (!valido) System.out.println("CPF inválido. Tente novamente.");
                 } while (!valido);
 
-                // Cadastro de endereço
+                
                 System.out.println("Cadastro de Endereço:");
                 System.out.print("Digite o endereço completo: ");
                 endereco = sc.nextLine();
             }
         }
 
-        // Aqui você pode salvar os dados em um banco de dados, arquivo, etc.
+        
         System.out.println("\nCadastro realizado com sucesso!");
         System.out.println("Nome: " + nome);
         System.out.println("Telefone: " + telefone);
