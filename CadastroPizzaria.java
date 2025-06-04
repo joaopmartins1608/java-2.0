@@ -11,35 +11,39 @@ public class CadastroPizzaria {
             System.out.print("Escolha uma opção: ");
 
             int opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpa o buffer
+            scanner.nextLine(); 
 
             switch (opcao) {
                 case 1 -> {
-                    // Chama o método ou classe de cadastro de pessoas
-                    CadastroPessoas.realizarCadastro(scanner);
+                    CadastroDePessoas.cpes();
+                    //CadastroPessoas.realizarCadastro(scanner);
+                    break;
                 }
                 case 2 -> {
-                    // Chama o método ou classe do cardápio
                     Cardapio.mostrarCardapio();
+                    break;
                 }
                 default -> System.out.println("Opção inválida. Por favor, tente novamente.");
             }
-
+            
+            
         }
     }
 }
 
-// Classe Cardapio adicionada para evitar erro de símbolo não encontrado
+/* 
+class CadastroPessoas {
+    public static void realizarCadastro(Scanner scanner) {
+        System.out.println("Indo para o cadastro de pessoas...");
+        
+        
+    }
+}
+*/
+
 class Cardapio {
     public static void mostrarCardapio() {
         System.out.println("Indo para o cardápio...");
-    }
-}
-
-// Classe CadastroPessoas adicionada para evitar erro de símbolo não encontrado
-class CadastroPessoas {
-    public static void realizarCadastro(Scanner scanner) {
-        System.out.println("Cadastro realizado com sucesso!");
-        // Aqui você pode adicionar a lógica de cadastro de pessoas
+        
     }
 }
