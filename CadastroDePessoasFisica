@@ -1,1 +1,26 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
+public class PessoaFisica {
+    public static void loginCliente() {
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+
+        String endereco = EnderecoCadastro.cadastrarEndereco("cliente");
+
+        try (FileWriter writer = new FileWriter("data/clientes.txt", true)) {
+            writer.write("Nome: " + nome + ", CPF: " + cpf + ", Telefone: " + telefone + ", Endereço: " + endereco + "\n");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar cliente.");
+        }
+
+        Cardapio.exibirCardapio(nome, cpf);
+    }
+}
